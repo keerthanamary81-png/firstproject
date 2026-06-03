@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI House Price Prediction</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins',sans-serif;
+        }
+
+        body{
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:linear-gradient(135deg,#0f172a,#1e293b,#334155);
+            padding:30px;
+        }
+
+        .card{
+            width:100%;
+            max-width:520px;
+            background:rgba(255,255,255,0.08);
+            backdrop-filter:blur(12px);
+            border:1px solid rgba(255,255,255,0.15);
+            border-radius:25px;
+            padding:35px;
+            box-shadow:0 10px 40px rgba(0,0,0,0.4);
+            color:white;
+        }
+
+        .title{
+            text-align:center;
+            margin-bottom:25px;
+        }
+
+        .title h1{
+            font-size:32px;
+            font-weight:700;
+            color:#38bdf8;
+        }
+
+        .title p{
+            margin-top:8px;
+            color:#cbd5e1;
+            font-size:14px;
+        }
+
+        .form-group{
+            margin-bottom:18px;
+        }
+
+        label{
+            display:block;
+            margin-bottom:8px;
+            font-size:14px;
+            color:#e2e8f0;
+        }
+
+        input,select{
+            width:100%;
+            padding:14px;
+            border:none;
+            border-radius:12px;
+            background:rgba(255,255,255,0.12);
+            color:white;
+            font-size:15px;
+            outline:none;
+        }
+
+        input::placeholder{
+            color:#cbd5e1;
+        }
+
+        select option{
+            color:black;
+        }
+
+        .grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:15px;
+        }
+
+        .btn{
+            width:100%;
+            padding:15px;
+            border:none;
+            border-radius:14px;
+            background:linear-gradient(90deg,#06b6d4,#3b82f6);
+            color:white;
+            font-size:16px;
+            font-weight:600;
+            cursor:pointer;
+            transition:0.3s;
+            margin-top:15px;
+        }
+
+        .btn:hover{
+            transform:translateY(-3px);
+            box-shadow:0 8px 20px rgba(59,130,246,0.5);
+        }
+
+        .result{
+            margin-top:25px;
+            padding:18px;
+            border-radius:15px;
+            text-align:center;
+            background:rgba(255,255,255,0.1);
+            border:1px solid rgba(255,255,255,0.1);
+        }
+
+        .result h2{
+            color:#22c55e;
+            margin-bottom:8px;
+        }
+
+        .result p{
+            font-size:26px;
+            font-weight:bold;
+            color:#ffffff;
+        }
+
+        @media(max-width:600px){
+
+            .grid{
+                grid-template-columns:1fr;
+            }
+
+            .card{
+                padding:25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="card">
+
+        <div class="title">
+            <h1>🏠 AI House Predictor</h1>
+            <p>Predict House Prices Using Machine Learning</p>
+        </div>
+
+        <form action="/predict" method="POST">
+            {% csrf_token %}
+            <div class="grid">
+
+                <div class="form-group">
+                    <label>Area</label>
+                    <input type="number" name="area" placeholder="Enter Area" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Bedrooms</label>
+                    <input type="number" name="bedrooms" placeholder="Bedrooms" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Bathrooms</label>
+                    <input type="number" name="bathrooms" placeholder="Bathrooms" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Stories</label>
+                    <input type="number" name="stories" placeholder="Stories" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Parking</label>
+                    <input type="number" name="parking" placeholder="Parking" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Main Road</label>
+                    <select name="mainroad">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Guest Room</label>
+                    <select name="guestroom">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Basement</label>
+                    <select name="basement">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Hot Water Heating</label>
+                    <select name="hotwaterheating">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Air Conditioning</label>
+                    <select name="airconditioning">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Preferred Area</label>
+                    <select name="prefarea">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Furnishing Status</label>
+                    <select name="furnishingstatus">
+                        <option value="furnished">Furnished</option>
+                        <option value="semi-furnished">Semi Furnished</option>
+                        <option value="unfurnished">Unfurnished</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <button class="btn" type="submit">
+                Predict Price 🚀
+            </button>
+
+        </form>
+
+        {% if prediction %}
+
+        <div class="result">
+            <h2>Predicted House Price</h2>
+            <p>₹ {{ prediction }}</p>
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</body>
+</html>
